@@ -14,7 +14,7 @@ fill_in 'Password', with: ENV['BUGSNAG_PASSWORD']
 click_on 'Sign in'
 first('span', text: '7d').click
 
-sleep 5 # required
+sleep 10 # required
 
 seven_day_error_occurrences = all(".DataTable-row .DataTable-cell:nth-child(3)").reduce(0) do |accum, node|
   accum + node.text.to_i
