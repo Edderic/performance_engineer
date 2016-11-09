@@ -6,13 +6,22 @@ require 'capybara/poltergeist'
 include Capybara::DSL
 Capybara.default_driver = :poltergeist
 
+Capybara.register_driver :poltergeist do |app|
+  Capybara::Poltergeist::Driver.new(app, {js_errors: false})
+end
+
+Capybara.default_driver = :poltergeist
+
 visit "https://app.bugsnag.com/user/sign_in"
 
 fill_in 'Email', with: ENV['BUGSNAG_EMAIL']
 fill_in 'Password', with: ENV['BUGSNAG_PASSWORD']
 
 click_on 'Sign in'
-first('span', text: '7d').click
+
+sleep 2 # required
+
+first('span', text: '7d').trigger('click')
 
 sleep 5 # required
 
